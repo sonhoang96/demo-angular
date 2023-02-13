@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { XyzService } from '../services/xyz.service'
 import { MODE, ACTION_TYPE } from "../constants";
 import { INTERFACE_INFO } from "../app.interface";
+import { config } from './config.table'
 
 const InitData: INTERFACE_INFO = { id: '', name: '', age: 0 }
 
@@ -13,26 +14,26 @@ const InitData: INTERFACE_INFO = { id: '', name: '', age: 0 }
 })
 
 export class XyzComponent implements OnInit {
-  constructor(private xyzService: XyzService) {
-  }
-
-  isActiveForm: boolean = false
-  textSubmit: string = '';
+  constructor(private xyzService: XyzService) {}
 
   listData: any;
-  dataForm: INTERFACE_INFO = InitData;
+  formData: INTERFACE_INFO = InitData;
 
   modeType: typeof MODE = MODE;
   modeForm: string = this.modeType.ADD;
+  tableConfig: typeof config = config;
+
+  isActiveForm: boolean = false;
+  textSubmit: string = '';
 
   handleOpenForm(mode: string = MODE.ADD, data: INTERFACE_INFO): void {
     switch (mode) {
       case MODE.UPDATE:
-        this.dataForm = { ...data }
+        this.formData = { ...data }
         this.textSubmit = ACTION_TYPE.UPDATE
         break;
       default:
-        this.dataForm = InitData
+        this.formData = InitData
         this.textSubmit = ACTION_TYPE.ADD
         break;
     }
@@ -41,12 +42,12 @@ export class XyzComponent implements OnInit {
   }
 
   handleCloseForm(): void {
-    this.dataForm = InitData;
+    this.formData = InitData;
     this.isActiveForm = false;
   }
 
   async handleSubmit() {
-    const { id, name, age } = this.dataForm
+    const { id, name, age } = this.formData
 
     if (name === '') {
       return alert('Trường tên không được để rỗng')

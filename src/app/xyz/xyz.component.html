@@ -2,16 +2,18 @@
   <div class="title">
     <h2>DEMO CRUD ANGULAR</h2>
   </div>
+  <app-table [data]="listData" [config]="tableConfig" />
+
   <div class="toolbar">
     <div class="tool-btn">
-      <button (click)="handleOpenForm(modeType.ADD, dataForm)">Thêm dữ liệu</button>
+      <button (click)="handleOpenForm(modeType.ADD, formData)">Thêm dữ liệu</button>
     </div>
     <div class="form" *ngIf="isActiveForm">
       <form>
         <label>Tên:</label>
-        <input name="name" type="text" [(ngModel)]="dataForm.name"/>
+        <input name="name" type="text" [(ngModel)]="formData.name"/>
         <label>Tuổi:</label>
-        <input name="age" type="number" [(ngModel)]="dataForm.age"/>
+        <input name="age" type="number" [(ngModel)]="formData.age"/>
       </form>
       <button (click)="handleSubmit()" type="button">{{textSubmit}}</button>
       <button (click)="handleCloseForm()">Đóng</button>
@@ -22,17 +24,17 @@
     <table>
       <thead>
       <tr>
-        <th>ID</th>
+        <th>STT</th>
         <th>Name</th>
         <th>Age</th>
         <th>Action</th>
       </tr>
       </thead>
-      <tbody *ngFor="let item of listData; index as i">
-      <tr>
-        <th>{{i + 1}}</th>
-        <th>{{item.name}}</th>
-        <th>{{item.age}}</th>
+      <tbody>
+      <tr *ngFor="let item of listData; index as i">
+        <td>{{i + 1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.age}}</td>
         <button (click)="handleOpenForm(modeType.UPDATE, item)">Sửa</button>
         <button (click)="handleDelete(item.id)">Xoá</button>
       </tr>

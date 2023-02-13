@@ -1,0 +1,24 @@
+<nz-table #basicTable [nzData]="data">
+  <ng-container>
+  <thead>
+    <tr>
+      <th
+        *ngFor="let item of config"
+        [nzWidth]="item.width"
+        [nzColumnKey]="item.name"
+        nzAlign="center"
+      >
+        {{item.name}}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let obj of basicTable.data; index as idx;">
+    <td>{{idx + 1}}</td>
+    <ng-template *ngFor="let item of obj">
+     <td [accessKey]="idx">{{item}}</td>
+    </ng-template>
+  </tr>
+  </tbody>
+  </ng-container>
+</nz-table>

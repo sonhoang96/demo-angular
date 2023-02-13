@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {XyzService} from '../services/xyz.service'
-import {MODE, ACTION_TYPE} from "../constants";
-import {INTERFACE_INFO} from "../app.interface";
+import { XyzService } from '../services/xyz.service'
+import { MODE, ACTION_TYPE } from "../constants";
+import { INTERFACE_INFO } from "../app.interface";
 
-const InitData: INTERFACE_INFO = {id: '', name: '', age: 0}
+const InitData: INTERFACE_INFO = { id: '', name: '', age: 0 }
 
 @Component({
   selector: 'app-xyz',
   templateUrl: './xyz.component.html',
-  styleUrls: ['./xyz.component.css']
+  styleUrls: [ './xyz.component.css' ]
 })
 
 export class XyzComponent implements OnInit {
@@ -28,7 +28,7 @@ export class XyzComponent implements OnInit {
   handleOpenForm(mode: string = MODE.ADD, data: INTERFACE_INFO): void {
     switch (mode) {
       case MODE.UPDATE:
-        this.dataForm = {...data}
+        this.dataForm = { ...data }
         this.textSubmit = ACTION_TYPE.UPDATE
         break;
       default:
@@ -46,7 +46,7 @@ export class XyzComponent implements OnInit {
   }
 
   async handleSubmit() {
-    const {id, name, age} = this.dataForm
+    const { id, name, age } = this.dataForm
 
     if (name === '') {
       return alert('Trường tên không được để rỗng')
@@ -57,9 +57,9 @@ export class XyzComponent implements OnInit {
 
     try {
       if (this.modeForm === MODE.ADD) {
-        await this.xyzService.addData({name, age}).subscribe()
+        await this.xyzService.addData({ name, age }).subscribe()
       } else {
-        await this.xyzService.updateData({id, name, age}).subscribe()
+        await this.xyzService.updateData({ id, name, age }).subscribe()
       }
       this.handleCloseForm()
       await this.handleGet()
@@ -77,7 +77,7 @@ export class XyzComponent implements OnInit {
 
   handleDelete(id: string): void {
     try {
-      this.xyzService.deleteData(id).subscribe({error: (error: any): void => console.log(error)})
+      this.xyzService.deleteData(id).subscribe({ error: (error: any): void => console.log(error) })
       this.handleGet()
     } catch (e) {
       alert(e)

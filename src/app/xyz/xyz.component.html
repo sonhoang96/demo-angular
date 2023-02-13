@@ -9,15 +9,15 @@
     <div class="form" *ngIf="isActiveForm">
       <form>
         <label>Tên:</label>
-        <input name="name" type="text" [(ngModel)]="dataForm.name" />
+        <input name="name" type="text" [(ngModel)]="dataForm.name"/>
         <label>Tuổi:</label>
-        <input name="age" type="number" [(ngModel)]="dataForm.age" />
-        <button (click)="handleSubmit()" type="button">{{textSubmit}}</button>
-        <button (click)="handleCloseForm()">Đóng</button>
+        <input name="age" type="number" [(ngModel)]="dataForm.age"/>
       </form>
+      <button (click)="handleSubmit()" type="button">{{textSubmit}}</button>
+      <button (click)="handleCloseForm()">Đóng</button>
     </div>
   </div>
-  <hr />
+  <hr/>
   <div class="content">
     <table>
       <thead>

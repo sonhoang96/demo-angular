@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="title">
+    <h2>DEMO CRUD ANGULAR</h2>
+  </div>
+  <div class="toolbar">
+    <div class="tool-btn">
+      <button (click)="handleOpenForm(modeType.ADD, dataForm)">Thêm dữ liệu</button>
+    </div>
+    <div class="form" *ngIf="isActiveForm">
+      <form>
+        <label>Tên:</label>
+        <input name="name" type="text" [(ngModel)]="dataForm.name" />
+        <label>Tuổi:</label>
+        <input name="age" type="number" [(ngModel)]="dataForm.age" />
+        <button (click)="handleSubmit()" type="button">{{textSubmit}}</button>
+        <button (click)="handleCloseForm()">Đóng</button>
+      </form>
+    </div>
+  </div>
+  <hr />
+  <div class="content">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody *ngFor="let item of listData; index as i">
+      <tr>
+        <th>{{i + 1}}</th>
+        <th>{{item.name}}</th>
+        <th>{{item.age}}</th>
+        <button (click)="handleOpenForm(modeType.UPDATE, item)">Sửa</button>
+        <button (click)="handleDelete(item.id)">Xoá</button>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

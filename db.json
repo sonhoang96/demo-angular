@@ -1,24 +1,15 @@
 {
   "data": [
     {
-      "id": 3,
-      "name": "DzungW",
-      "age": 5
-    },
-    {
-      "name": "sdsdsds",
-      "age": 0,
-      "id": 4
-    },
-    {
-      "id": 5,
-      "name": "sdsdsds",
-      "age": 15
-    },
-    {
-      "name": "2323",
-      "age": 2,
-      "id": 6
+      "id": 7,
+      "idCard": "#4355",
+      "name": "Hoàng Sơn",
+      "age": 24,
+      "group": "HUTT",
+      "city": "01",
+      "district": "009",
+      "ward": "00349",
+      "status": true
     }
   ]
 }

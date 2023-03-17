@@ -3,7 +3,8 @@ export const HTTP_METHOD = {
   GET: 'GET',
   POST: 'POST',
   PUT: 'PUT',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
+  SPECIAL: 'SPECIAL'
 }
 
 export const MODE = {
@@ -23,6 +24,6 @@ export const DATA_TYPE = {
 }
 
 export const ACTION_TYPE = {
-  ADD: 'THÊM',
-  UPDATE: 'SỬA'
+  ADD: 'Thêm',
+  UPDATE: 'Sửa'
 }

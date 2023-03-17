@@ -2,11 +2,11 @@
   margin-bottom: 12px;
 }
 
-form *, button {
-  margin-right: 5px
-}
-
 div.form {
   display: flex;
+}
+
+nz-select {
+  width: 120px;
 }
 

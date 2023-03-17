@@ -2,43 +2,125 @@
   <div class="title">
     <h2>DEMO CRUD ANGULAR</h2>
   </div>
-  <app-table [data]="listData" [config]="tableConfig" />
-
-  <div class="toolbar">
-    <div class="tool-btn">
-      <button (click)="handleOpenForm(modeType.ADD, formData)">Thêm dữ liệu</button>
-    </div>
-    <div class="form" *ngIf="isActiveForm">
-      <form>
-        <label>Tên:</label>
-        <input name="name" type="text" [(ngModel)]="formData.name"/>
-        <label>Tuổi:</label>
-        <input name="age" type="number" [(ngModel)]="formData.age"/>
+  <app-table
+    [data]="listData"
+    [isLoading]="isLoading"
+    [isFilter]="true"
+    [config]="tableConfig"
+    (selectionData)="handleOpenForm(modeType.UPDATE, $event)"
+    (onDelete)="handleDelete($event)"
+  >
+    <ng-container buttons>
+      <div nz-col class="gutter-row" align="right">
+        <div class="inner-box">
+          <button nz-button nzType="primary" (click)="handleOpenForm(modeType.ADD, formData)">Thêm dữ liệu</button>
+        </div>
+      </div>
+    </ng-container>
+  </app-table>
+  <nz-modal
+    [(nzVisible)]="isActiveForm"
+    [nzTitle]="textTitle"
+    (nzOnOk)="handleSubmit()"
+    (nzOnCancel)="handleCloseForm()"
+    [nzWidth]="720"
+  >
+    <ng-container *nzModalContent>
+      <form [formGroup]="myForm" nz-form (ngSubmit)="handleSubmit()">
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="idCard">IdCard</nz-form-label>
+              <nz-form-control>
+                <input nz-input name="idCard" formControlName="idCard" id="idCard"/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="name">Name</nz-form-label>
+              <nz-form-control>
+                <input nz-input name="name" formControlName="name" type="text" id="name">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="age">Age</nz-form-label>
+              <nz-form-control>
+                <nz-input-number style="width: 100%" [nzMin]="1" formControlName="age" id="age"/>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="group">Group</nz-form-label>
+              <nz-form-control>
+                <input nz-input name="group" formControlName="group" type="text" id="group">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="status">Status</nz-form-label>
+              <nz-form-control>
+                <nz-select formControlName="status" id="status">
+                  <nz-option [nzValue]="true" nzLabel="Hoạt Động"></nz-option>
+                  <nz-option [nzValue]="false" nzLabel="Không Hoạt Động"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="city">City</nz-form-label>
+              <nz-form-control>
+                <nz-select nzPlaceHolder="Chọn thành phố" formControlName="city" id="city" (ngModelChange)="handleUpdateSelection($event, 'district')">
+                  <nz-option
+                    *ngFor="let cities of listAdministrativeBoundaries"
+                    [nzValue]="cities.Id"
+                    [nzLabel]="cities.Name">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-row [nzGutter]="24">
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="district">District</nz-form-label>
+              <nz-form-control>
+                <nz-select nzPlaceHolder="Chọn quận/huyện" formControlName="district" id="district" (ngModelChange)="handleUpdateSelection($event, 'ward')">
+                  <nz-option
+                    *ngFor="let district of listSelectionDistrict"
+                    [nzValue]="district.Id"
+                    [nzLabel]="district.Name">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="4" nzFor="ward">Ward</nz-form-label>
+              <nz-form-control>
+                <nz-select nzPlaceHolder="Chọn xã/phường" formControlName="ward" id="ward">
+                  <nz-option
+                    *ngFor="let ward of listSelectionWard"
+                    [nzValue]="ward.Id"
+                    [nzLabel]="ward.Name">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
       </form>
-      <button (click)="handleSubmit()" type="button">{{textSubmit}}</button>
-      <button (click)="handleCloseForm()">Đóng</button>
-    </div>
-  </div>
-  <hr/>
-  <div class="content">
-    <table>
-      <thead>
-      <tr>
-        <th>STT</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of listData; index as i">
-        <td>{{i + 1}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.age}}</td>
-        <button (click)="handleOpenForm(modeType.UPDATE, item)">Sửa</button>
-        <button (click)="handleDelete(item.id)">Xoá</button>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+    </ng-container>
+  </nz-modal>
 </div>

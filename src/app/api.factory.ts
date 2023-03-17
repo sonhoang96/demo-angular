@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
 import { DOMAIN, HTTP_METHOD } from "./constants";
 import { DATA_TYPE } from "./constants";
 
-const { GET, POST, PUT, DELETE } = HTTP_METHOD
+const { GET, POST, PUT, DELETE, SPECIAL } = HTTP_METHOD
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,10 @@ export class ApiFactory {
 
   public fetchApi(data: any, method: string = GET, typeResult: string = DATA_TYPE.ANY, param: string = ''): Observable<any> {
     const callApi = this.http;
-
+    const administrativeBoundaries = 'https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json'
     switch (method) {
+      case SPECIAL:
+        return callApi.get<typeof typeResult>(`${administrativeBoundaries}`)
       case GET:
         return callApi.get<typeof typeResult>(`${DOMAIN}/${param}`)
       case PUT:

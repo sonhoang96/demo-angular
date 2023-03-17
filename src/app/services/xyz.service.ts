@@ -18,8 +18,11 @@ export class XyzService {
   public getData(): Observable<any> {
     return this.apiFactory.fetchApi(null, HTTP_METHOD.GET, DATA_TYPE.ARRAY, 'data')
   }
+  public getAdministrativeBoundaries(): Observable<any> {
+    return this.apiFactory.fetchApi(null, HTTP_METHOD.SPECIAL, DATA_TYPE.ARRAY, '')
+  }
 
-  public addData(data: object): Observable<any> {
+  public addData(data: INTERFACE_INFO): Observable<any> {
     return this.apiFactory.fetchApi(data, HTTP_METHOD.POST, DATA_TYPE.OBJECT, 'data')
   }
 

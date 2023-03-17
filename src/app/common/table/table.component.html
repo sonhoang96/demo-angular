@@ -1,6 +1,16 @@
-<nz-table #basicTable [nzData]="data">
+<div nz-row [nzGutter]="16" style="margin: 7px 0">
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <div class="inner-box" *ngIf="isFilter">
+      <input nz-input placeholder="Tìm kiếm" [ngModel]="textSearch"/>
+    </div>
+  </div>
+  <div nz-col class="gutter-row" [nzSpan]="12">
+    <ng-content select="[buttons]"></ng-content>
+  </div>
+</div>
+<nz-table #basicTable [nzData]="data" [nzLoading]="isLoading">
   <ng-container>
-  <thead>
+    <thead>
     <tr>
       <th
         *ngFor="let item of config"
@@ -11,14 +21,27 @@
         {{item.name}}
       </th>
     </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let obj of basicTable.data; index as idx;">
-    <td>{{idx + 1}}</td>
-    <ng-template *ngFor="let item of obj">
-     <td [accessKey]="idx">{{item}}</td>
-    </ng-template>
-  </tr>
-  </tbody>
+    </thead>
+    <tbody>
+    <tr *ngFor="let obj of basicTable.data; index as idx;">
+      <td nzAlign="center">{{idx + 1}}</td>
+      <td nzAlign="left">{{obj.name}}</td>
+      <td nzAlign="right">{{obj.age}}</td>
+      <td nzAlign="center">{{obj.idCard}}</td>
+      <td nzAlign="center">
+        <button style="marginRight: '12px'" nz-button nzType="primary" nzShape="circle" (click)="selectionRowData(obj)">
+          <span nz-icon nzType="edit" nzTheme="outline"></span>
+        </button>
+        <button
+          nzShape="circle"
+          nz-popconfirm=""
+          nzPopconfirmTitle="Xác nhận xóa"
+          (nzOnConfirm)="handleDeleteItem(obj.id)"
+          nz-button nzDanger nzType="primary">
+          <span nz-icon nzType="delete" nzTheme="outline"></span>
+        </button>
+      </td>
+    </tr>
+    </tbody>
   </ng-container>
 </nz-table>

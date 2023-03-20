@@ -79,7 +79,7 @@
             <nz-form-item>
               <nz-form-label [nzSpan]="4" nzFor="city">City</nz-form-label>
               <nz-form-control>
-                <nz-select nzPlaceHolder="Chọn thành phố" formControlName="city" id="city" (ngModelChange)="handleUpdateSelection($event, 'district')">
+                <nz-select nzPlaceHolder="Chọn thành phố" formControlName="city" id="city">
                   <nz-option
                     *ngFor="let cities of listAdministrativeBoundaries"
                     [nzValue]="cities.Id"
@@ -95,7 +95,7 @@
             <nz-form-item>
               <nz-form-label [nzSpan]="4" nzFor="district">District</nz-form-label>
               <nz-form-control>
-                <nz-select nzPlaceHolder="Chọn quận/huyện" formControlName="district" id="district" (ngModelChange)="handleUpdateSelection($event, 'ward')">
+                <nz-select nzPlaceHolder="Chọn quận/huyện" formControlName="district" id="district">
                   <nz-option
                     *ngFor="let district of listSelectionDistrict"
                     [nzValue]="district.Id"

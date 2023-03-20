@@ -1,6 +1,6 @@
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Component, OnInit } from '@angular/core';
-import { EMPTY, finalize, forkJoin, switchMap, tap } from "rxjs";
+import { EMPTY, finalize, forkJoin, tap } from "rxjs";
 
 import { XyzService } from '../services/xyz.service'
 import { INTERFACE_INFO } from "../app.interface";
@@ -49,32 +49,34 @@ export class XyzComponent implements OnInit {
   textTitle: string = ''
   textSubmit: string = '';
 
-  reLoadData: object = {
-    next: () => this.handleGet(),
-    complete: () => this.handleCloseForm()
-  }
-
   setLoadingTable(status: boolean): void {
     this.isLoading = status
   }
 
-  handleUpdateSelection(id: string, typeUpdate: string) {
-    if (typeUpdate === 'district') {
+  onInitFormData(): void {
+    this.myForm = this.fb.group({})
+    //Initial controls
+    Object.entries(InitData).map(([ key, value ]) => {
+      this.myForm.addControl(key, this.fb.control(value))
+    })
+    //handle rendering list district after choose city
+    this.myForm.get('city')?.valueChanges.subscribe((selectionChange) => {
+      this.myForm.get('district')?.setValue('')
+      this.myForm.get('ward')?.setValue('')
       this.listAdministrativeBoundaries.filter(item => {
-        if (item.Id === id) {
+        if (item.Id === selectionChange) {
           this.listSelectionDistrict = item.Districts
         }
       })
-    }
-
-    if (typeUpdate === 'ward') {
+    })
+    this.myForm.get('district')?.valueChanges.subscribe((selectionChange) => {
+      this.myForm.get('ward')?.setValue('')
       this.listSelectionDistrict.filter(item => {
-        if (item.Id === id) {
+        if (item.Id === selectionChange) {
           this.listSelectionWard = item.Wards
         }
       })
-    }
-    return this.myForm.controls[typeUpdate].setValue('')
+    })
   }
 
   handleOpenForm(mode: string = MODE.ADD, data: INTERFACE_INFO): void {
@@ -91,13 +93,7 @@ export class XyzComponent implements OnInit {
         break;
     }
     Object.entries(data).map(([ key, value ]) => {
-      if (key === 'city') {
-        this.handleUpdateSelection(value, 'district')
-      }
-      if (key === 'district') {
-        this.handleUpdateSelection(value, 'ward')
-      }
-      this.myForm.controls[key].setValue(value)
+      this.myForm.get(key)?.setValue(value)
     })
     this.modeForm = mode
     this.isActiveForm = true
@@ -121,9 +117,15 @@ export class XyzComponent implements OnInit {
 
     this.setLoadingTable(true)
     if (this.modeForm === MODE.ADD) {
-      this.xyzService.addData(formData).subscribe(this.reLoadData)
+      this.xyzService.addData(formData).subscribe({
+        next: () => this.handleGet(),
+        complete: () => this.handleCloseForm()
+      })
     } else {
-      this.xyzService.updateData(formData).subscribe(this.reLoadData)
+      this.xyzService.updateData(formData).subscribe({
+        next: () => this.handleGet(),
+        complete: () => this.handleCloseForm()
+      })
     }
   }
 
@@ -136,9 +138,7 @@ export class XyzComponent implements OnInit {
 
   handleDelete(id: string) {
     this.setLoadingTable(true)
-    // tap()
-    // catchError: return throwError(() => error)
-    // finalize()
+
     this.xyzService.deleteData(id).subscribe({
       next: () => this.handleGet(),
       error: (error: any): void => alert(error)
@@ -146,12 +146,7 @@ export class XyzComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.myForm = this.fb.group({})
-
-    Object.entries(InitData).map(([ key, value ]) => {
-      this.myForm.addControl(key, this.fb.control(value))
-    })
-
+    this.onInitFormData()
     this.setLoadingTable(true)
     forkJoin([ this.xyzService.getData(), this.xyzService.getAdministrativeBoundaries() ])
       .pipe(
